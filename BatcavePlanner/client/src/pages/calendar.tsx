@@ -20,6 +20,7 @@ import { useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useTheme } from '@/lib/theme-context';
 import { type Task, type Event } from '@shared/schema';
+import { MonthView } from '@/components/calendar/month-view';
 
 type CalendarView = 'month' | 'week' | 'day' | 'quarter';
 
@@ -327,22 +328,32 @@ export function Calendar() {
         className="relative"
       >
         <Card className="bg-card/95 backdrop-blur-sm border-border/50 overflow-hidden">
-          <CardContent className="p-0">
-            {/* Calendar content will be rendered by view-specific components */}
-            <div className="p-8 text-center">
-              <CalendarIcon className="h-16 w-16 mx-auto mb-4 text-primary/50" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">
-                {currentView.charAt(0).toUpperCase() + currentView.slice(1)} View
-              </h3>
-              <p className="text-muted-foreground">
-                This view is under construction. Advanced {currentView} view with drag-and-drop functionality coming soon.
-              </p>
-              {tasks.length > 0 && (
-                <div className="mt-4 text-sm text-muted-foreground">
-                  Found {tasks.length} tasks to display
-                </div>
-              )}
-            </div>
+          <CardContent className="p-6">
+            {currentView === 'month' ? (
+              <MonthView
+                currentDate={currentDate}
+                tasks={tasks}
+                events={events}
+                onDateSelect={setSelectedDate}
+                selectedDate={selectedDate}
+              />
+            ) : (
+              /* Other views placeholder */
+              <div className="p-8 text-center">
+                <CalendarIcon className="h-16 w-16 mx-auto mb-4 text-primary/50" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  {currentView.charAt(0).toUpperCase() + currentView.slice(1)} View
+                </h3>
+                <p className="text-muted-foreground">
+                  Advanced {currentView} view with drag-and-drop functionality coming soon.
+                </p>
+                {tasks.length > 0 && (
+                  <div className="mt-4 text-sm text-muted-foreground">
+                    Found {tasks.length} tasks to display
+                  </div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </motion.div>
