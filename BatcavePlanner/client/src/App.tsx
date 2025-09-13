@@ -10,6 +10,7 @@ import DashboardPage from "@/pages/dashboard";
 import AnalyticsPage from "@/pages/analytics";
 import CustomizePage from "@/pages/customize";
 import { Tasks } from "@/pages/tasks";
+import { Calendar } from "@/pages/calendar";
 import PlaceholderPage from "@/pages/placeholder";
 import NotFound from "@/pages/not-found";
 
@@ -29,15 +30,7 @@ function Router() {
           />
         )} 
       />
-      <Route 
-        path="/calendar" 
-        component={() => (
-          <PlaceholderPage 
-            title="Temporal Command Center" 
-            description="Futuristic calendar with month/week/day views, drag-and-drop events, and smooth temporal navigation." 
-          />
-        )} 
-      />
+      <Route path="/calendar" component={Calendar} />
       <Route 
         path="/settings" 
         component={() => (
