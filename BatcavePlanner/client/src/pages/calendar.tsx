@@ -23,6 +23,7 @@ import { type Task, type Event } from '@shared/schema';
 import { MonthView } from '@/components/calendar/month-view';
 import { WeekView } from '@/components/calendar/week-view';
 import { DayView } from '@/components/calendar/day-view';
+import { QuarterView } from '@/components/calendar/quarter-view';
 
 type CalendarView = 'month' | 'week' | 'day' | 'quarter';
 
@@ -355,23 +356,17 @@ export function Calendar() {
                 onDateSelect={setSelectedDate}
                 selectedDate={selectedDate}
               />
-            ) : (
-              /* Quarter view placeholder */
-              <div className="p-8 text-center">
-                <CalendarIcon className="h-16 w-16 mx-auto mb-4 text-primary/50" />
-                <h3 className="text-xl font-semibold text-foreground mb-2">
-                  {currentView.charAt(0).toUpperCase() + currentView.slice(1)} View
-                </h3>
-                <p className="text-muted-foreground">
-                  Advanced {currentView} view with drag-and-drop functionality coming soon.
-                </p>
-                {tasks.length > 0 && (
-                  <div className="mt-4 text-sm text-muted-foreground">
-                    Found {tasks.length} tasks to display
-                  </div>
-                )}
-              </div>
-            )}
+            ) : currentView === 'quarter' ? (
+              <QuarterView
+                currentDate={currentDate}
+                tasks={tasks}
+                events={events}
+                onDateSelect={setSelectedDate}
+                selectedDate={selectedDate}
+                onViewChange={setCurrentView}
+                onDateChange={setCurrentDate}
+              />
+            ) : null}
           </CardContent>
         </Card>
       </motion.div>
