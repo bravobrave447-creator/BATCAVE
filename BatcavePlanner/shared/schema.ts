@@ -86,3 +86,62 @@ export type UpdateTask = z.infer<typeof updateTaskSchema>;
 export type ClientTask = z.infer<typeof clientTaskSchema>;
 export type ClientUpdateTask = z.infer<typeof clientUpdateTaskSchema>;
 export type Task = typeof tasks.$inferSelect;
+
+// Events table for calendar module
+export const events = pgTable("events", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  category: text("category").notNull().default("personal"), // academic, fitness, creative, social, maintenance, personal, meeting
+  startTime: timestamp("start_time").notNull(),
+  endTime: timestamp("end_time").notNull(),
+  allDay: boolean("all_day").notNull().default(false),
+  recurrence: text("recurrence"), // none, daily, weekly, monthly, yearly
+  recurrenceEnd: timestamp("recurrence_end"),
+  taskId: varchar("task_id"), // Link to associated task if applicable
+  location: text("location"),
+  priority: text("priority").notNull().default("medium"), // low, medium, high, urgent
+  isCompleted: boolean("is_completed").notNull().default(false),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+});
+
+export const insertEventSchema = createInsertSchema(events).omit({
+  id: true,
+  isCompleted: true,
+  completedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateEventSchema = createInsertSchema(events).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial();
+
+// Client-side schema for events with proper validation
+export const clientEventSchema = insertEventSchema.extend({
+  startTime: z.string(),
+  endTime: z.string(),
+  recurrenceEnd: z.string().optional(),
+}).omit({
+  userId: true,
+});
+
+export const clientUpdateEventSchema = updateEventSchema.extend({
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
+  recurrenceEnd: z.string().optional(),
+}).omit({
+  completedAt: true,
+});
+
+export type InsertEvent = z.infer<typeof insertEventSchema>;
+export type UpdateEvent = z.infer<typeof updateEventSchema>;
+export type ClientEvent = z.infer<typeof clientEventSchema>;
+export type ClientUpdateEvent = z.infer<typeof clientUpdateEventSchema>;
+export type Event = typeof events.$inferSelect;
