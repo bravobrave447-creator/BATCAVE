@@ -22,6 +22,7 @@ import { useTheme } from '@/lib/theme-context';
 import { type Task, type Event } from '@shared/schema';
 import { MonthView } from '@/components/calendar/month-view';
 import { WeekView } from '@/components/calendar/week-view';
+import { DayView } from '@/components/calendar/day-view';
 
 type CalendarView = 'month' | 'week' | 'day' | 'quarter';
 
@@ -346,8 +347,16 @@ export function Calendar() {
                 onDateSelect={setSelectedDate}
                 selectedDate={selectedDate}
               />
+            ) : currentView === 'day' ? (
+              <DayView
+                currentDate={currentDate}
+                tasks={tasks}
+                events={events}
+                onDateSelect={setSelectedDate}
+                selectedDate={selectedDate}
+              />
             ) : (
-              /* Other views placeholder */
+              /* Quarter view placeholder */
               <div className="p-8 text-center">
                 <CalendarIcon className="h-16 w-16 mx-auto mb-4 text-primary/50" />
                 <h3 className="text-xl font-semibold text-foreground mb-2">
