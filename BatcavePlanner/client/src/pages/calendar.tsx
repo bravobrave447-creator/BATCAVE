@@ -21,6 +21,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { useTheme } from '@/lib/theme-context';
 import { type Task, type Event } from '@shared/schema';
 import { MonthView } from '@/components/calendar/month-view';
+import { WeekView } from '@/components/calendar/week-view';
 
 type CalendarView = 'month' | 'week' | 'day' | 'quarter';
 
@@ -331,6 +332,14 @@ export function Calendar() {
           <CardContent className="p-6">
             {currentView === 'month' ? (
               <MonthView
+                currentDate={currentDate}
+                tasks={tasks}
+                events={events}
+                onDateSelect={setSelectedDate}
+                selectedDate={selectedDate}
+              />
+            ) : currentView === 'week' ? (
+              <WeekView
                 currentDate={currentDate}
                 tasks={tasks}
                 events={events}
